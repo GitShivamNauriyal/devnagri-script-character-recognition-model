@@ -1,0 +1,15 @@
+# Ignore local dataset
+DevanagariHandwrittenCharacterDataset/
+
+# Ignore compiled models and temporary outputs
+*.keras
+*.h5
+*.log
+.gemini/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Ignore training artifacts
+training_curves.png
+sample_predictions.png
