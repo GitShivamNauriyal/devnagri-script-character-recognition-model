@@ -6,7 +6,7 @@ This project is structured for clean software engineering and data science inter
 
 ---
 
-## 🌟 Project Highlights
+## Project Highlights
 
 - **Dataset Size:** 92,000 images (78,200 training, 13,800 testing) across 46 distinct classes.
 - **Top Evaluation Accuracy:** **98.29% Test Accuracy** using a deep Convolutional Neural Network with Batch Normalization and Dropout regularization.
@@ -15,7 +15,7 @@ This project is structured for clean software engineering and data science inter
 
 ---
 
-## 🛠️ Pipeline Architecture & Methodology
+## Pipeline Architecture & Methodology
 
 ### 1. Preprocessing: Shirorekha (Headline) Detection & Normalization
 In Devanagari script, words and characters are unified by a top horizontal line called the **Shirorekha**. Variations in margins, tilts, and alignment create noise for raw CNNs. 
@@ -40,7 +40,7 @@ In Devanagari script, words and characters are unified by a top horizontal line 
 
 ---
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
 ### Prerequisites
 Install the required libraries:
@@ -73,9 +73,19 @@ To perform training:
 
 ---
 
-## 🎤 Interview Presentation Pointers
+## Interview Presentation Pointers
 
 If presenting this project in a technical interview, emphasize:
 - **Label Alignment Gotcha:** Show how you caught and fixed the Train/Test subdirectory name mismatch which would otherwise result in silent target misclassifications during training evaluation.
 - **Shirorekha Normalization vs. Removal:** Explain how Shirorekha removal can distort character shape (e.g., separating loops). Detail why **Vertical Alignment (Translation Normalization)** is a much safer, more robust feature engineering strategy.
 - **Regularization Strategy:** Highlight the integration of Batch Normalization after every Conv block and Dropout on Dense layers to achieve >98% generalization accuracy.
+
+---
+
+## Why Both project.ipynb and project.py Exist
+
+In industrial machine learning projects, it is standard practice to separate experimental code from production-ready code:
+
+- **`project.ipynb` (Jupyter Notebook):** Serves as the exploratory research environment. It is used for step-by-step prototyping, interactive experimentation, and direct inline visualization of intermediate states (such as binary image states and projection charts).
+- **`project.py` (Python Script):** Serves as the clean, productionized pipeline. It is decoupled from notebook cell state noise and metadata, is optimized for command-line execution, and is version-controlled with Git without metadata noise.
+

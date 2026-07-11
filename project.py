@@ -25,22 +25,22 @@ from tensorflow.keras.layers import (
 from sklearn.metrics import classification_report
 import cv2
 
-# ── Configuration ───────────────────────────────────────────────────────────
+# Configuration
 RUN_TRAINING = False  # Set to True when ready to run full training
 
-# ── Paths (relative to this script) ─────────────────────────────────────────
+# Paths (relative to this script)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATASET_DIR = os.path.join(SCRIPT_DIR, "DevanagariHandwrittenCharacterDataset")
 TRAIN_DIR = os.path.join(DATASET_DIR, "Train")
 TEST_DIR = os.path.join(DATASET_DIR, "Test")
 
-# ── Image / training hyper-parameters ───────────────────────────────────────
+# Image / training hyper-parameters
 IMG_SIZE = (32, 32)
 BATCH_SIZE = 32
 EPOCHS = 10
 NUM_CLASSES = 46
 
-# ── Folder-name → Hindi-character mapping ───────────────────────────────────
+# Folder-name to Hindi-character mapping
 # The folders are sorted alphabetically by image_dataset_from_directory, so
 # the label index matches the sorted order below.  We build the mapping
 # manually so every prediction can be displayed with its Hindi glyph.
@@ -148,11 +148,9 @@ def get_hindi_labels(class_names):
     return [FOLDER_TO_HINDI[name] for name in class_names]
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # 1. LOAD DATA
-# ═══════════════════════════════════════════════════════════════════════════
 print("\n" + "=" * 60)
-print("Loading datasets …")
+print("Loading datasets ...")
 print("=" * 60)
 
 training_dataset = tf.keras.utils.image_dataset_from_directory(
@@ -180,11 +178,9 @@ hindi_labels = get_hindi_labels(class_names)
 print(f"\nClasses ({len(class_names)}): {class_names}")
 print(f"Hindi labels: {hindi_labels}")
 
-# ═══════════════════════════════════════════════════════════════════════════
-# 2. SHIROREKHA (HEADLINE) DETECTION & NORMALIZATION  (OpenCV)
-# ═══════════════════════════════════════════════════════════════════════════
+# 2. SHIROREKHA (HEADLINE) DETECTION & NORMALIZATION (OpenCV)
 print("\n" + "=" * 60)
-print("Shirorekha (headline) detection & normalization …")
+print("Shirorekha (headline) detection & normalization ...")
 print("=" * 60)
 
 
@@ -230,7 +226,7 @@ def align_shirorekha(img_gray, shirorekha_row, target_row=6):
     return aligned
 
 
-# ── Demonstrate on sample images from the training set ──────────────────
+# Demonstrate on sample images from the training set
 sample_folders = ["character_1_ka", "character_20_na", "character_16_tabla",
                   "character_25_ma", "character_33_ha"]
 
@@ -255,7 +251,7 @@ for row_idx, folder in enumerate(sample_folders):
     # Binary for display
     _, binary_disp = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-    # ── Plot ──
+    # Plotting
     # Original
     axes[row_idx, 0].imshow(gray, cmap="gray")
     axes[row_idx, 0].axhline(y=shiro_row, color="red", linewidth=1, label="Shirorekha")
@@ -287,13 +283,11 @@ plt.tight_layout()
 shiro_path = os.path.join(SCRIPT_DIR, "shirorekha_analysis.png")
 plt.savefig(shiro_path, dpi=150, bbox_inches="tight")
 plt.close()
-print(f"  → Shirorekha analysis saved to {shiro_path}")
+print(f"  -> Shirorekha analysis saved to {shiro_path}")
 
-# ═══════════════════════════════════════════════════════════════════════════
 # 3. BUILD MODEL
-# ═══════════════════════════════════════════════════════════════════════════
 print("\n" + "=" * 60)
-print("Building CNN model …")
+print("Building CNN model ...")
 print("=" * 60)
 
 model = Sequential([
@@ -337,11 +331,9 @@ model = Sequential([
 model.summary()
 
 if RUN_TRAINING:
-    # ═══════════════════════════════════════════════════════════════════════════
     # 4. COMPILE & TRAIN
-    # ═══════════════════════════════════════════════════════════════════════════
     print("\n" + "=" * 60)
-    print("Compiling & training …")
+    print("Compiling & training ...")
     print("=" * 60)
 
     model.compile(
@@ -356,11 +348,9 @@ if RUN_TRAINING:
         epochs=EPOCHS,
     )
 
-    # ═══════════════════════════════════════════════════════════════════════════
     # 5. PLOT TRAINING CURVES
-    # ═══════════════════════════════════════════════════════════════════════════
     print("\n" + "=" * 60)
-    print("Saving training curves …")
+    print("Saving training curves ...")
     print("=" * 60)
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -388,20 +378,18 @@ if RUN_TRAINING:
     plot_path = os.path.join(SCRIPT_DIR, "training_curves.png")
     plt.savefig(plot_path, dpi=150)
     plt.close()
-    print(f"  → Saved to {plot_path}")
+    print(f"  -> Saved to {plot_path}")
 
-    # ═══════════════════════════════════════════════════════════════════════════
     # 6. EVALUATE ON TEST SET
-    # ═══════════════════════════════════════════════════════════════════════════
     print("\n" + "=" * 60)
-    print("Evaluating on test set …")
+    print("Evaluating on test set ...")
     print("=" * 60)
 
     test_loss, test_acc = model.evaluate(testing_dataset)
     print(f"\nTest accuracy : {test_acc:.4f}")
     print(f"Test loss     : {test_loss:.4f}")
 
-    # ── Classification report ───────────────────────────────────────────────
+    # Classification report
     # Collect all true labels and predictions across the full test set.
     y_true = []
     y_pred = []
@@ -419,11 +407,9 @@ if RUN_TRAINING:
     print("-" * 60)
     print(classification_report(y_true, y_pred, target_names=hindi_labels))
 
-    # ═══════════════════════════════════════════════════════════════════════════
     # 7. SAMPLE PREDICTION
-    # ═══════════════════════════════════════════════════════════════════════════
     print("\n" + "=" * 60)
-    print("Sample predictions …")
+    print("Sample predictions ...")
     print("=" * 60)
 
     # Grab one batch from the test set
@@ -436,7 +422,7 @@ if RUN_TRAINING:
             pred_idx = np.argmax(preds[i])
             true_label = hindi_labels[true_idx]
             pred_label = hindi_labels[pred_idx]
-            correct = "✓" if true_idx == pred_idx else "✗"
+            correct = "Y" if true_idx == pred_idx else "N"
 
             axes[i].imshow(images[i].numpy().astype("uint8"))
             axes[i].set_title(
@@ -449,14 +435,12 @@ if RUN_TRAINING:
         sample_path = os.path.join(SCRIPT_DIR, "sample_predictions.png")
         plt.savefig(sample_path, dpi=150)
         plt.close()
-        print(f"  → Saved to {sample_path}")
+        print(f"  -> Saved to {sample_path}")
 
-    # ═══════════════════════════════════════════════════════════════════════════
     # 8. SAVE MODEL
-    # ═══════════════════════════════════════════════════════════════════════════
     model_path = os.path.join(SCRIPT_DIR, "model_devanagari.keras")
     model.save(model_path)
-    print(f"\n✅ Model saved to {model_path}")
+    print(f"\nModel saved to {model_path}")
     print("Done!")
 else:
     print("\nTraining skipped as RUN_TRAINING = False. Preprocessing demo successfully generated.")
