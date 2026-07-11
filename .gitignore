@@ -13,3 +13,4 @@ __pycache__/
 # Ignore training artifacts
 training_curves.png
 sample_predictions.png
+shirorekha_analysis.png
