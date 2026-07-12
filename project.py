@@ -26,7 +26,7 @@ from sklearn.metrics import classification_report
 import cv2
 
 # Configuration
-RUN_TRAINING = False  # Set to True when ready to run full training
+RUN_TRAINING = True  # Set to True when ready to run full training
 
 # Paths (relative to this script)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))

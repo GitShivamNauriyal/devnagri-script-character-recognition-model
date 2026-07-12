@@ -9,7 +9,7 @@ This project is structured for clean software engineering and data science inter
 ## Project Highlights
 
 - **Dataset Size:** 92,000 images (78,200 training, 13,800 testing) across 46 distinct classes.
-- **Top Evaluation Accuracy:** **98.29% Test Accuracy** using a deep Convolutional Neural Network with Batch Normalization and Dropout regularization.
+- **Top Evaluation Accuracy:** **98.45% Test Accuracy** using a deep Convolutional Neural Network with Batch Normalization and Dropout regularization.
 - **Shirorekha Headline Normalization:** Implemented a real-time vertical translation alignment tool using OpenCV horizontal projection profiles to normalize varied handwriting baseline margins.
 - **Corrected Label Mapping:** Resolved folder name conflicts (e.g. `tabla`/`tabala`, `waw`/`va`) between Train and Test splits to ensure correct categorical label alignment.
 
